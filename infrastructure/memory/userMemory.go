@@ -1,12 +1,15 @@
 package memory
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 // User情報を配列への保存と参照を実装(DB代わり)
 
 // UserMemory インターフェイス
 type UserMemory interface {
-	Store(data User) bool
+	Store(data User) (bool, error)
 	Get(id int) (*User, error)
 	GetAll() ([]*User, error)
 }
@@ -44,10 +47,10 @@ func (u *UserList) generateID() (int, error) {
 }
 
 // Store ユーザ情報を保存
-func (u *UserList) Store(data User) bool {
+func (u *UserList) Store(data User) (bool, error) {
 	id, err := u.generateID()
 	if err != nil {
-		return false
+		return false, errors.New("No ID")
 	}
 
 	user := &User{
@@ -56,7 +59,7 @@ func (u *UserList) Store(data User) bool {
 	}
 
 	u.userList = append(u.userList, user)
-	return true
+	return true, nil
 }
 
 // Get IDでユーザ情報を取得

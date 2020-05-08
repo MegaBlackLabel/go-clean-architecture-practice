@@ -11,7 +11,7 @@ import (
 
 // UserController userController構造体のインターフェイス
 type UserController interface {
-	CreateUser(data *model.User) bool
+	CreateUser(data *model.User) (bool, error)
 	GetAllUsers() ([]*model.User, error)
 	GetUser(id int) (*model.User, error)
 }
@@ -27,7 +27,7 @@ func NewUserController(us interactor.UserInteractor, log logs.Logger) UserContro
 }
 
 // CreateUser ユーザ登録
-func (uc *userController) CreateUser(data *model.User) bool {
+func (uc *userController) CreateUser(data *model.User) (bool, error) {
 	return uc.UserInteractor.Save(data)
 }
 

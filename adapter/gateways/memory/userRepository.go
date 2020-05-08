@@ -1,6 +1,8 @@
 package memory
 
 import (
+	"errors"
+
 	"github.com/MegaBlackLabel/go-clean-architecture-practice/domain/model"
 	"github.com/MegaBlackLabel/go-clean-architecture-practice/domain/repository"
 	"github.com/MegaBlackLabel/go-clean-architecture-practice/infrastructure/memory"
@@ -18,9 +20,9 @@ func NewUserRepository(users memory.UserList) repository.UserRepository {
 }
 
 // Store Userを保存
-func (ur *userRepository) Save(data *model.User) bool {
+func (ur *userRepository) Save(data *model.User) (bool, error) {
 	if data.Name == "" {
-		return false
+		return false, errors.New("No Name")
 	}
 	user := memory.User{
 		Name: data.Name,

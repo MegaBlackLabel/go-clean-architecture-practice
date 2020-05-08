@@ -9,7 +9,7 @@ import (
 
 // UserInteractor インターフェイスはNewUserInteractorで使用する
 type UserInteractor interface {
-	Save(data *model.User) bool
+	Save(data *model.User) (bool, error)
 	GetAll() ([]*model.User, error)
 	Get(id int) (*model.User, error)
 }
@@ -24,7 +24,7 @@ func NewUserInteractor(ur repository.UserRepository) UserInteractor {
 }
 
 // Save ユーザ情報を保存
-func (us *userInteractor) Save(data *model.User) bool {
+func (us *userInteractor) Save(data *model.User) (bool, error) {
 	return us.UserRepository.Save(data)
 }
 

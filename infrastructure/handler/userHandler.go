@@ -39,14 +39,16 @@ func (uh *userHandler) CreateUser(w http.ResponseWriter, r *http.Request, _ http
 
 	fmt.Println(data)
 
-	result := uh.UserController.CreateUser(data)
-	if result == true {
-		uh.logs.Infof("registerd")
-		fmt.Fprintln(w, "registerd")
-	} else {
-		uh.logs.Infof("failed")
-		fmt.Fprintln(w, "failed")
+	result, err := uh.UserController.CreateUser(data)
+	if err == nil {
+		if result == true {
+			uh.logs.Infof("registerd")
+			fmt.Fprintln(w, "registerd")
+			return
+		}
 	}
+	uh.logs.Infof("failed")
+	fmt.Fprintln(w, "failed")
 }
 
 func (uh *userHandler) GetAllUsers(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
